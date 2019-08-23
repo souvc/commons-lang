@@ -1214,6 +1214,11 @@ public class NumberUtilsTest {
         assertFalse("isDigits(String) neg 1 failed", NumberUtils.isDigits("1234.5"));
         assertFalse("isDigits(String) neg 3 failed", NumberUtils.isDigits("1ab"));
         assertFalse("isDigits(String) neg 4 failed", NumberUtils.isDigits("abc"));
+
+        assertFalse(NumberUtils.isDigits("2.34"));
+        assertFalse(NumberUtils.isDigits("0000000000.596"));
+        assertTrue(NumberUtils.isDigits("234"));
+        assertTrue(NumberUtils.isDigits("0000000000596"));
     }
 
     /**
@@ -1549,4 +1554,23 @@ public class NumberUtilsTest {
         assertTrue(NumberUtils.compare((byte)113, (byte)113)==0);
         assertTrue(NumberUtils.compare((byte)123, (byte)32) > 0);
     }
+
+    @Test
+    public void testisNumber() {
+        //test float double
+        assertTrue(NumberUtils.isNumber("5.96"));
+        assertTrue(NumberUtils.isNumber("2.34f"));
+        assertTrue(NumberUtils.isNumber("2.34F"));
+        assertTrue(NumberUtils.isNumber("2.34d"));
+        assertTrue(NumberUtils.isNumber("2.34D"));
+
+        assertTrue(NumberUtils.isNumber("100l"));
+        assertTrue(NumberUtils.isNumber("100L"));
+
+        //test other
+        assertFalse(NumberUtils.isNumber("2.23c"));
+        assertFalse( NumberUtils.isNumber("s5"));
+        assertFalse(NumberUtils.isNumber("0000000000596"));
+    }
+
 }
