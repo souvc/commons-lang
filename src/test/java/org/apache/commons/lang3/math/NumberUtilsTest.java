@@ -117,6 +117,7 @@ public class NumberUtilsTest {
 
     /**
      * Test for {(@link NumberUtils#createNumber(String)}
+     * 支持十六进制，八进制，科学计数法，和L,f的
      */
     @Test
     public void testStringCreateNumberEnsureNoPrecisionLoss(){
@@ -1206,6 +1207,9 @@ public class NumberUtilsTest {
         assertTrue(Float.compare(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY) == 0);
     }
 
+    /**
+     * 判断字符串中是否全为数字
+     */
     @Test
     public void testIsDigits() {
         assertFalse("isDigits(null) failed", NumberUtils.isDigits(null));
@@ -1224,6 +1228,15 @@ public class NumberUtilsTest {
     /**
      * Tests isCreatable(String) and tests that createNumber(String) returns
      * a valid number iff isCreatable(String) returns false.
+     */
+
+    /**
+     *  校验String是否是一个有效的Java number
+     *  校验number包含hexadecimal 的标记 0x or 0X、八进制数字、科学计数法和其他的数字标记类型，比如1234L
+     *  以0开头的非十六进制的数统一作为八进制的数处理。所以String为09将返回false，
+     *  因为9不是一个有效的八进制。但是是以0.开头的数字，都作为十进制处理
+     *  null或empty或blank字符串返回false
+     *
      */
     @Test
     public void testIsCreatable() {
@@ -1379,6 +1392,23 @@ public class NumberUtilsTest {
 
         compareIsNumberWithCreateNumber("2.", true); // LANG-521
         compareIsNumberWithCreateNumber("1.1L", false); // LANG-664
+
+
+        // add test
+        compareIsNumberWithCreateNumber("01", true);
+        compareIsNumberWithCreateNumber("02", true);
+        compareIsNumberWithCreateNumber("03", true);
+        compareIsNumberWithCreateNumber("04", true);
+        compareIsNumberWithCreateNumber("05", true);
+        compareIsNumberWithCreateNumber("06", true);
+        compareIsNumberWithCreateNumber("07", true);
+
+        //special attention
+        compareIsNumberWithCreateNumber("08", false);
+        compareIsNumberWithCreateNumber("09", false);
+
+        compareIsNumberWithCreateNumber("010", true);
+        compareIsNumberWithCreateNumber("011", true);
     }
 
     @Test
@@ -1424,6 +1454,13 @@ public class NumberUtilsTest {
         fail("Expecting "+ expected + " for isCreatable/createNumber using \"" + val + "\" but got " + isValid + " and " + canCreate);
     }
 
+    /**
+     * 校验提供的字符串是否可以解析为number
+     * 可解析的number包括下面方法可以执行字符串 Integer.parseInt(String), Long.parseLong(String), Float.parseFloat(String) or Double.parseDouble(String).
+     * 这个方法可以替代java.text.ParseException异常
+     * 十六进制和科学计数符号认为是不可解析的
+     * @since 3.4
+     */
     @Test
     public void testIsParsable() {
         assertFalse( NumberUtils.isParsable(null) );
@@ -1445,6 +1482,11 @@ public class NumberUtilsTest {
         assertTrue( NumberUtils.isParsable("-018") );
         assertTrue( NumberUtils.isParsable("-018.2") );
         assertTrue( NumberUtils.isParsable("-.236") );
+
+        // compare with isCreatable
+        assertTrue( NumberUtils.isParsable("08") );
+        assertTrue( NumberUtils.isParsable("09") );
+
     }
 
     private boolean checkCreateNumber(final String val) {
@@ -1527,6 +1569,9 @@ public class NumberUtilsTest {
         assertTrue(Float.isNaN(NumberUtils.max(bF)));
     }
 
+    /**
+     * 比较方法
+     */
     @Test
     public void compareInt() {
         assertTrue(NumberUtils.compare(-3, 0) < 0);
@@ -1555,6 +1600,10 @@ public class NumberUtilsTest {
         assertTrue(NumberUtils.compare((byte)123, (byte)32) > 0);
     }
 
+
+    /**
+     * 检查字符串是否为数字,isCreatable最新，isNumber过时方法
+     */
     @Test
     public void testisNumber() {
         //test float double
@@ -1571,6 +1620,10 @@ public class NumberUtilsTest {
         assertFalse(NumberUtils.isNumber("2.23c"));
         assertFalse( NumberUtils.isNumber("s5"));
         assertFalse(NumberUtils.isNumber("0000000000596"));
+
+        // compare with isCreatable
+        assertFalse( NumberUtils.isNumber("08") );
+        assertFalse( NumberUtils.isNumber("09") );
     }
 
 }
