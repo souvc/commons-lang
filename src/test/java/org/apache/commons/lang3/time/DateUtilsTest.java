@@ -1231,23 +1231,20 @@ public class DateUtilsTest {
 
 
 
-        //????
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //?????
+        //截取到分钟
         System.out.println(dateFormat.format(DateUtils.truncate(date, Calendar.MINUTE)));//2016-08-15 16:45:00
-        //????
+        //截取到秒
         System.out.println(dateFormat.format(DateUtils.truncate(date, Calendar.SECOND))); //2016-08-15 16:45:08
-        //?????
+        //截取到小时
         System.out.println(dateFormat.format(DateUtils.truncate(date, Calendar.HOUR_OF_DAY)));//2016-08-15 16:00:00
-        //????
+        //截取到日
         System.out.println(dateFormat.format(DateUtils.truncate(date, Calendar.DAY_OF_MONTH))); //2016-08-15 00:00:00
-        //?????
+        //截取到月份
         System.out.println(dateFormat.format(DateUtils.truncate(date, Calendar.MONTH))); //2016-08-01 00:00:00
-        //?????
+        //截取到年份
         System.out.println(dateFormat.format(DateUtils.truncate(date, Calendar.YEAR))); //2016-01-01 00:00:00
-
-
 
     }
 
