@@ -194,6 +194,22 @@ public class DateUtilsTest {
         assertTrue(DateUtils.isSameDay(cala, calb));
         calb.add(Calendar.YEAR, 1);
         assertFalse(DateUtils.isSameDay(cala, calb));
+
+
+        //???????
+        String[] format={"yyyy-MM-dd HH:mm:ss"};
+        Date date1= null;
+        Date date2= null;
+        try {
+            date1 = DateUtils.parseDate("2016-10-26 12:31:54",format);
+            date2=DateUtils.parseDate("2016-10-26 12:31:55",format);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println("date1:"+date1);
+        System.out.println("date2:"+date2);
+        assertTrue(DateUtils.isSameDay(date1, date2));
+
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -253,6 +269,20 @@ public class DateUtilsTest {
 
         calb.set(2004, Calendar.JULY, 9, 11, 45, 0);
         assertTrue(DateUtils.isSameInstant(cala, calb));
+
+
+        //????????
+        String[] format={"yyyy-MM-dd HH:mm:ss"};
+        Date date1= null;
+        Date date2= null;
+        try {
+            date1 = DateUtils.parseDate("2016-10-26 12:31:54",format);
+            date2=DateUtils.parseDate("2016-10-26 12:31:55",format);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        assertFalse(DateUtils.isSameInstant(date1, date2));
+
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -1197,6 +1227,28 @@ public class DateUtilsTest {
         endCal.set(Calendar.YEAR, 280000000);
         final Calendar cal = DateUtils.truncate(endCal, Calendar.DATE);
         assertEquals(0, cal.get(Calendar.HOUR));
+
+
+
+
+        //????
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //?????
+        System.out.println(dateFormat.format(DateUtils.truncate(date, Calendar.MINUTE)));//2016-08-15 16:45:00
+        //????
+        System.out.println(dateFormat.format(DateUtils.truncate(date, Calendar.SECOND))); //2016-08-15 16:45:08
+        //?????
+        System.out.println(dateFormat.format(DateUtils.truncate(date, Calendar.HOUR_OF_DAY)));//2016-08-15 16:00:00
+        //????
+        System.out.println(dateFormat.format(DateUtils.truncate(date, Calendar.DAY_OF_MONTH))); //2016-08-15 00:00:00
+        //?????
+        System.out.println(dateFormat.format(DateUtils.truncate(date, Calendar.MONTH))); //2016-08-01 00:00:00
+        //?????
+        System.out.println(dateFormat.format(DateUtils.truncate(date, Calendar.YEAR))); //2016-01-01 00:00:00
+
+
+
     }
 
     /**

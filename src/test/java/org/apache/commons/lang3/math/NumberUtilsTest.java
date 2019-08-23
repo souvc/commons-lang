@@ -512,6 +512,12 @@ public class NumberUtilsTest {
         this.testCreateBigDecimalFailure("+"); // sign alone not valid
         this.testCreateBigDecimalFailure("++"); // in case this was also allowed by some JVMs
         this.testCreateBigDecimalFailure("++0");
+
+
+        //注意不能直接写带符号的浮点数
+        this.testCreateBigDecimalFailure("1.2d");
+        this.testCreateBigDecimalFailure("1.2f");
+
     }
 
     protected void testCreateBigDecimalFailure(final String str) {
